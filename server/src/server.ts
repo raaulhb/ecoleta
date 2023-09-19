@@ -3,7 +3,7 @@ import express from 'express';
 const app = express();
 
 app.get('/users', (request:any, response:any) => {
-    response.json(['Raul', 'Heitor'])
+    response.json(['Raul', 'Heitor', 'Daniel', 'fulano', 'ciclano'])
 })
 
 app.listen(3333, () => {
