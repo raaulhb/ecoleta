@@ -105,6 +105,9 @@ const CreatePoint = () => {
                     </li>
                 </ul>
             </fieldset>
+            <button type="submit">
+                Cadastrar ponto de Coleta
+            </button>
         </form>
     </div>
   )
