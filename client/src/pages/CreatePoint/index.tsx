@@ -1,14 +1,30 @@
-import React from 'react'
-import './CreatePoint.css'
-import logo from '../../assets/logo.svg'
-import { Link } from 'react-router-dom'
+import React, { useEffect, useState } from 'react';
+import './CreatePoint.css';
+import logo from '../../assets/logo.svg';
+import { Link } from 'react-router-dom';
 
-import { FiArrowLeft } from 'react-icons/fi'
+import { FiArrowLeft } from 'react-icons/fi';
+import { TileLayer, Marker, MapContainer } from 'react-leaflet';
 
-import { TileLayer, useMap, Marker, MapContainer, Popup } from 'react-leaflet'
+import api from '../../services/api';
+
+interface Item {
+    id: number;
+    image_url: string;
+    title: string;
+}
 
 
 const CreatePoint = () => {
+    const [items, setItems] = useState<Item[]>([]);
+
+    useEffect(() => {
+        api.get('items')
+        .then(response => {
+           setItems(response.data)
+        })
+    }, []);
+
   return (
     <div id="page-create-point">
         <header>
@@ -19,7 +35,7 @@ const CreatePoint = () => {
                 Voltar para home
             </Link>
         </header>
-        <form>
+        <form>  
             <h1>Cadastro do <br />Ponto de Coleta</h1>
 
             <fieldset>
@@ -61,16 +77,14 @@ const CreatePoint = () => {
                     <span>Selecione um endereco no mapa</span>
                 </legend>
 
-                <MapContainer center={[51.505, -0.09]} zoom={13} scrollWheelZoom={false}>
+                <MapContainer center={[51.505, -0.09]} zoom={15}>
                     <TileLayer
-                    attribution='copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                     />
-                     <Marker position={[51.505, -0.09]}>
-                        <Popup>
-                            A pretty CSS3 popup. <br /> Easily customizable.
-                        </Popup>
-                    </Marker>
+                        attribution='copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                        />
+                     <Marker 
+                        position={[51.505, -0.09]}>
+                     </Marker>
                 </MapContainer>
 
                 <div className="fiel-group">
@@ -95,30 +109,14 @@ const CreatePoint = () => {
                     <span>Selecione um ou mais itens abaixo</span>
                 </legend>
                 <ul className="items-grid">
-                    <li>
-                        <img src="http://localhost:3333/uploads/lampadas.svg" alt="teste" />
-                        <span>Oleo de Cozinha</span>
+                    {items.map(item => (
+                        <li>
+                        <img src={item.image_url} alt={item.title} />
+                        <span>{item.title}</span>
                     </li>
-                    <li className="selected">
-                        <img src="http://localhost:3333/uploads/lampadas.svg" alt="teste" />
-                        <span>Oleo de Cozinha</span>
-                    </li>
-                    <li>
-                        <img src="http://localhost:3333/uploads/lampadas.svg" alt="teste" />
-                        <span>Oleo de Cozinha</span>
-                    </li>
-                    <li>
-                        <img src="http://localhost:3333/uploads/lampadas.svg" alt="teste" />
-                        <span>Oleo de Cozinha</span>
-                    </li>
-                    <li>
-                        <img src="http://localhost:3333/uploads/lampadas.svg" alt="teste" />
-                        <span>Oleo de Cozinha</span>
-                    </li>
-                    <li>
-                        <img src="http://localhost:3333/uploads/lampadas.svg" alt="teste" />
-                        <span>Oleo de Cozinha</span>
-                    </li>
+                    ))}
+               
+                    
                 </ul>
             </fieldset>
             <button type="submit">
