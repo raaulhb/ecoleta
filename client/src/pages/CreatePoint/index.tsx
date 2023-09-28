@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 
 import { FiArrowLeft } from 'react-icons/fi';
 import { TileLayer, Marker, MapContainer } from 'react-leaflet';
-
+import axios from 'axios';
 import api from '../../services/api';
 
 interface Item {
@@ -13,15 +13,26 @@ interface Item {
     image_url: string;
     title: string;
 }
-
+interface IBGEUFResponse {
+    sigla: string;
+}
 
 const CreatePoint = () => {
     const [items, setItems] = useState<Item[]>([]);
+    const [ufs, setUfs] = useState <string[]>([]);
 
     useEffect(() => {
         api.get('items')
         .then(response => {
            setItems(response.data)
+        })
+    }, []);
+
+    useEffect(() => {
+        axios.get<IBGEUFResponse[]>('https://servicodados.ibge.gov.br/api/v1/localidades/estados')
+        .then(response => {
+            const ufInitials = response.data.map(uf => uf.sigla);
+            setUfs(ufInitials);
         })
     }, []);
 
@@ -92,6 +103,10 @@ const CreatePoint = () => {
                         <label htmlFor="uf">Estado (UF)</label>
                         <select name="uf" id="uf">
                             <option value="0">Selecione uma UF</option>
+                            {ufs.map(uf => (
+                                 <option key={uf} value={uf}>{uf}</option>
+                            ))}
+
                         </select>
                     </div>
                     <div className="field">
@@ -110,7 +125,7 @@ const CreatePoint = () => {
                 </legend>
                 <ul className="items-grid">
                     {items.map(item => (
-                        <li>
+                        <li key={item.id}>
                         <img src={item.image_url} alt={item.title} />
                         <span>{item.title}</span>
                     </li>
