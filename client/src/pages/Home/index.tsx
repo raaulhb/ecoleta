@@ -16,7 +16,7 @@ const Home = () => {
              </h1>
              <p>Ajudamos pessoas a encontrarem pontos de coleta de forma eficiente.</p>
 
-             <a href="/cadastro">
+             <a href="/create-point">
                 <span>
                     <FiLogIn/>
                 </span>

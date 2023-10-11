@@ -1,16 +1,16 @@
-import React, { useState } from 'react';
-import { useMapEvents, Marker } from 'react-leaflet';
-import { LatLngExpression } from 'leaflet';
+import React from 'react';
+import { useMapEvents } from 'react-leaflet';
+import { LatLngExpression, LatLngTuple } from 'leaflet';
 
 interface GetClickedPositionProps {
-  setSelectedPosition: (position: LatLngExpression) => void;
+  setSelectedPosition: (position: LatLngTuple) => void;
 }
 
 const GetClickedPosition: React.FC<GetClickedPositionProps> = ({ setSelectedPosition }) => {
   const map = useMapEvents({
     click(e) {
       const { lat, lng } = e.latlng;
-      const position: LatLngExpression = [lat, lng];
+      const position: LatLngTuple = [lat, lng];
       setSelectedPosition(position); // Update the selected position
     },
   });

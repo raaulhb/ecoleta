@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 
 import { FiArrowLeft } from 'react-icons/fi';
 import { TileLayer, Marker, MapContainer, useMapEvents, Popup } from 'react-leaflet';
-import { LatLngExpression } from 'leaflet';
+import { LatLngExpression, LatLngTuple } from 'leaflet';
 import axios from 'axios';
 import api from '../../services/api';
 import GetClickedPosition from '../CreatePoint/GetClickedPosition'
@@ -31,7 +31,7 @@ const CreatePoint = () => {
     const [selectedCity, setSelectedCity] = useState('0');
     const [selectedItems, setSelectedItems] = useState<number[]>([])
     const [initialPosition, SetInitialPosition] = useState<[number,number]>([0, 0]);
-    const [selectedPosition, setSelectedPosition] = useState<LatLngExpression>([0, 0]);
+    const [selectedPosition, setSelectedPosition] = useState<LatLngTuple>([0, 0]);
     const [formData, setFormData] = useState({
         name: '',
         email: '',
@@ -117,7 +117,7 @@ const CreatePoint = () => {
         const uf = selectedUf;
         const city = selectedCity;
         const items = selectedItems;
-        const position = selectedPosition;    
+        const [latitude, longitude] = selectedPosition;    
 
        const data = {
         name,
@@ -126,7 +126,8 @@ const CreatePoint = () => {
         uf,
         city,
         items,
-        position,
+        latitude,
+        longitude
        }
        console.log(data)
        await api.post('points', data)
