@@ -1,7 +1,7 @@
 import React, { useEffect, useState, ChangeEvent, FormEvent } from 'react';
 import './CreatePoint.css';
 import logo from '../../assets/logo.svg';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 import { FiArrowLeft } from 'react-icons/fi';
 import { TileLayer, Marker, MapContainer, useMapEvents, Popup } from 'react-leaflet';
@@ -27,16 +27,19 @@ const CreatePoint = () => {
     const [ufs, setUfs] = useState <string[]>([]);
     const [cities, setCities] = useState <string[]>([]);
 
-    const [selectedUf, setSelectedUf] = useState ('0');
-    const [selectedCity, setSelectedCity] = useState('0');
-    const [selectedItems, setSelectedItems] = useState<number[]>([])
-    const [initialPosition, SetInitialPosition] = useState<[number,number]>([0, 0]);
-    const [selectedPosition, setSelectedPosition] = useState<LatLngTuple>([0, 0]);
     const [formData, setFormData] = useState({
         name: '',
         email: '',
         whatsapp: '',
     })
+
+    const [selectedUf, setSelectedUf] = useState ('0');
+    const [selectedCity, setSelectedCity] = useState('0');
+    const [selectedItems, setSelectedItems] = useState<number[]>([])
+    const [initialPosition, SetInitialPosition] = useState<[number,number]>([0, 0]);
+    const [selectedPosition, setSelectedPosition] = useState<LatLngTuple>([0, 0]);
+    
+    const navigate = useNavigate(); 
 
     //SETTING THE INITIAL POSITION GETS TO SLOW
     // useEffect(() => {
@@ -131,6 +134,10 @@ const CreatePoint = () => {
        }
        console.log(data)
        await api.post('points', data)
+
+       alert('Ponto de coleta criado!')
+       
+       navigate('/')
     }
 
   return (
