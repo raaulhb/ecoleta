@@ -11,9 +11,34 @@ const Routes = () => {
     return (
         <NavigationContainer>
             <AppStack.Navigator>
-                <AppStack.Screen name='Home' component={Home} />
-                <AppStack.Screen name='Points' component={Points} />
-                <AppStack.Screen name='Detail' component={Detail} />
+                <AppStack.Screen
+                  name='Home'
+                  component={Home}
+                  options={{ 
+                     headerShown: false,
+                     cardStyle: {
+                      backgroundColor: '#f0f0f5'
+                  }}}
+                  
+                 />
+                <AppStack.Screen 
+                  name='Points' 
+                  component={Points}
+                  options={{ 
+                    headerShown: false,
+                    cardStyle: {
+                     backgroundColor: '#f0f0f5'
+                 }}} 
+                  />
+                <AppStack.Screen 
+                  name='Detail' 
+                  component={Detail}
+                  options={{ 
+                    headerShown: false,
+                    cardStyle: {
+                     backgroundColor: '#f0f0f5'
+                 }}} 
+                  />
             </AppStack.Navigator>
         </NavigationContainer>
     )
