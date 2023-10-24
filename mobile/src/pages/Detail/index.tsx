@@ -1,9 +1,10 @@
-import { View, StyleSheet, TouchableOpacity, Image, Text, SafeAreaView } from "react-native";
+import { View, StyleSheet, TouchableOpacity, Image, Text, SafeAreaView, Linking } from "react-native";
 import { Feather as Icon, FontAwesome } from '@expo/vector-icons';
 import React, { useEffect, useState } from 'react'
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { RectButton } from 'react-native-gesture-handler'
 import api from "../../services/api";
+import * as MailComposer from 'expo-mail-composer';
 
 interface Params {
   point_id: number;
@@ -40,6 +41,31 @@ const Detail = () => {
     navigation.goBack();
   }
 
+  function handleComposeMail() {
+    MailComposer.composeAsync({
+      subject: 'Interesse na coleta de residuos',
+      recipients: [data.point.email],
+    })
+  }
+
+  function handleWhatsApp() {
+    const phoneNumber = data.point.whatsapp; 
+    const message = 'Ola, Tenho interesse sobre a coleta de residuos';
+    const whatsappURL = `whatsapp://send?phone=${phoneNumber}&text=${encodeURIComponent(message)}`;
+  
+    Linking.canOpenURL(whatsappURL)
+      .then((supported) => {
+        if (supported) {
+          return Linking.openURL(whatsappURL);
+        } else {
+          console.log("WhatsApp is not installed on your device.");
+        }
+      })
+      .catch((error) => {
+        console.error("An error occurred while trying to open WhatsApp: ", error);
+      });
+  }
+
   if (!data.point) {
     return null;
   }
@@ -66,12 +92,12 @@ const Detail = () => {
     </View>
 
     <View style={styles.footer}>
-      <RectButton style={styles.button} onPress={() => {}}>
+      <RectButton style={styles.button} onPress={() => handleWhatsApp}>
         <FontAwesome name='whatsapp' size={20} color='#FFF' />
         <Text style={styles.buttonText}>Whatsapp</Text>
       </RectButton>
 
-      <RectButton style={styles.button} onPress={() => {}}>
+      <RectButton style={styles.button} onPress={() => handleComposeMail}>
         <FontAwesome name='envelope-o' size={20} color='#FFF' />
         <Text style={styles.buttonText}>E-mail</Text>
       </RectButton>

@@ -24,6 +24,11 @@ interface Point {
   longitude: number;
 }
 
+interface Params {
+  uf: string;
+  city: string;
+}
+
 const Points = () => {
   const [items, setItems] = useState<Item[]>([]);
   const [points, setPoints] = useState<Point[]>([])
@@ -31,6 +36,9 @@ const Points = () => {
   const [initialPosition, setInitialPosition] = useState<[number, number]>([0,0]);
 
   const navigation = useNavigation();
+  const route = useRoute();
+
+  const routeParams = route.params as Params;
 
 useEffect(() => {
   async function loadPosition() {
@@ -63,14 +71,14 @@ loadPosition();
  useEffect(() => {
     api.get('points', {
       params: {
-        city: 'Franca',
-        uf: 'SP',
-        items: [1, 2]
+        city: routeParams.city,
+        uf: routeParams.uf,
+        items: selectedItems
       }
     }).then(response => {
       setPoints(response.data)
     })
- }, [])
+ }, [selectedItems])
 
   function handleNavigateBack() {
     navigation.goBack();
