@@ -4,11 +4,13 @@ import logo from '../../assets/logo.svg';
 import { Link, useNavigate } from 'react-router-dom';
 
 import { FiArrowLeft } from 'react-icons/fi';
-import { TileLayer, Marker, MapContainer, useMapEvents, Popup } from 'react-leaflet';
-import { LatLngExpression, LatLngTuple } from 'leaflet';
+import { TileLayer, Marker, MapContainer } from 'react-leaflet';
+import { LatLngTuple } from 'leaflet';
 import axios from 'axios';
 import api from '../../services/api';
 import GetClickedPosition from '../CreatePoint/GetClickedPosition'
+import Dropzone from '../../Components/Dropzone';
+
 
 interface Item {
     id: number;
@@ -152,6 +154,10 @@ const CreatePoint = () => {
         </header>
         <form onSubmit={handleSubmit}>  
             <h1>Cadastro do <br />Ponto de Coleta</h1>
+
+        <Dropzone/>
+
+
 
             <fieldset>
                 <legend>
